@@ -12,9 +12,8 @@ body{
 }
 
 canvas{
-    background-image: url(images/backgroundMario.jpg);
-    background-repeat: no-repeat;   
-    background-position: center;
+    background-image: url(images/background.jpg);
+    background-repeat: no-repeat;
     background-size: cover;
     border: 3px solid black;
     border-radius: 10px;

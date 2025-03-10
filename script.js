@@ -10,11 +10,14 @@ const imgPersonagemAndando = new Image();
 imgPersonagemAndando.src = "images/marioCorrendo.png";
 const imgPersonagemPulando = new Image();
 imgPersonagemPulando.src = "images/marioPulando.png";
+const buffImg1 = new Image();
+buffImg1.src = "images/boost.png";
 
 let jogoAtivo = true;
 let points = 0
 let MaxPoints = 0;
 let firstObstaculo = true;
+let cogumeloOnMap = false;
 
 const personagem = {
     x: 30,
@@ -35,6 +38,13 @@ const obstaculo = {
     altura: 70,
     velocidadeX: 5,
 };
+
+const buff1 = {
+    x: 260,
+    y: canvas.height,
+    largura: 30,
+    altura: 50,
+}
 
 personagem.chao = canvas.height - personagem.altura;
 
@@ -67,22 +77,6 @@ function atualizarPersonagem() {
 
 function desenharObstaculo() {
     ctx.drawImage(imgObstaculo,obstaculo.x, obstaculo.y, obstaculo.largura, obstaculo.altura);
-}
-
-function atualizarObstaculo() {
-    obstaculo.x -= obstaculo.velocidadeX;
-    if (obstaculo.x <= -obstaculo.largura) {
-        obstaculo.x = canvas.width;
-        obstaculo.velocidadeX += .3
-        let nova_altura = (Math.random() * 50) + 10
-        obstaculo.altura = nova_altura;
-        obstaculo.y = canvas.height - obstaculo.altura;
-        if(firstObstaculo){
-            firstObstaculo = false;
-        }else{
-            pontos();
-        }
-    }
 }
 
 function detectarColisao() {
@@ -133,6 +127,49 @@ function maxPontos(){
     }
 }
 
+function boost() {
+    if (!cogumeloOnMap) {
+        let chanceAtual = Math.random() * 100;
+        if (chanceAtual >= 0) {
+            cogumeloOnMap = true;
+            buff1.x = canvas.width;
+            buff1.y = canvas.height - buff1.altura - 10;
+        }
+    }
+    if (cogumeloOnMap) {
+        ctx.drawImage(buffImg1, buff1.x, buff1.y, buff1.largura, buff1.altura);
+    }
+}
+
+function colisaoBoost(){
+    if (
+        buff1.x < personagem.x + personagem.largura &&
+        buff1.x + buff1.largura > personagem.x &&
+        buff1.y < personagem.y + personagem.altura &&
+        buff1.y + personagem.altura > personagem.y
+    ) {
+        personagem.altura += 10
+    }
+}
+
+function atualizarObstaculo() {
+    obstaculo.x -= obstaculo.velocidadeX;
+    if (obstaculo.x <= -obstaculo.largura) {
+        obstaculo.x = canvas.width;
+        obstaculo.velocidadeX += 0.3;
+        let nova_altura = (Math.random() * 50) + 10;
+        obstaculo.altura = nova_altura;
+        obstaculo.y = canvas.height - obstaculo.altura; 
+        cogumeloOnMap = false;
+        if (firstObstaculo) {
+            firstObstaculo = false;
+        } else {
+            pontos();
+        }
+        boost();
+    }
+}
+
 function loop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     desenharPersonagem();
@@ -141,6 +178,7 @@ function loop() {
         desenharObstaculo();
         atualizarObstaculo();
         detectarColisao();
+        colisaoBoost();
     }
     requestAnimationFrame(loop);
 }
