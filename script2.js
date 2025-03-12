@@ -92,7 +92,7 @@ class obstaculo extends entidade {
 }
 
 const p = new personagem(30, 88, 40, 30);
-const ob = new obstaculo(260, 88, 40, 70, 5);
+const ob = new obstaculo(260, 88, 70, 70, 5);
 
 function playAgain() {
     textDerrota.style.display = "none";
@@ -136,8 +136,12 @@ function loop() {
 }
 
 document.addEventListener("keydown", function (event) {
-    if (event.code === "Space" && jogoAtivo) p.pular();
-    else if (event.code === "Space" && !jogoAtivo) playAgain();
+    if (event.code === "Space" && jogoAtivo){
+        p.pular();
+    }
+    else if (event.code === "Space" && !jogoAtivo){
+        playAgain();
+    }
 });
 
 buttonAviadado.addEventListener("click", playAgain);
