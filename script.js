@@ -79,6 +79,24 @@ function desenharObstaculo() {
     ctx.drawImage(imgObstaculo,obstaculo.x, obstaculo.y, obstaculo.largura, obstaculo.altura);
 }
 
+function atualizarObstaculo() {
+    obstaculo.x -= obstaculo.velocidadeX;
+    if (obstaculo.x <= -obstaculo.largura) {
+        obstaculo.x = canvas.width;
+        obstaculo.velocidadeX += 0.3;
+        let nova_altura = (Math.random() * 50) + 10;
+        obstaculo.altura = nova_altura;
+        obstaculo.y = canvas.height - obstaculo.altura; 
+        cogumeloOnMap = false;
+        if (firstObstaculo) {
+            firstObstaculo = false;
+        } else {
+            pontos();
+        }
+        boost();
+    }
+}
+
 function detectarColisao() {
     if (
         personagem.x < obstaculo.x + obstaculo.largura &&
@@ -149,24 +167,6 @@ function colisaoBoost(){
         buff1.y + personagem.altura > personagem.y
     ) {
         personagem.altura += 10
-    }
-}
-
-function atualizarObstaculo() {
-    obstaculo.x -= obstaculo.velocidadeX;
-    if (obstaculo.x <= -obstaculo.largura) {
-        obstaculo.x = canvas.width;
-        obstaculo.velocidadeX += 0.3;
-        let nova_altura = (Math.random() * 50) + 10;
-        obstaculo.altura = nova_altura;
-        obstaculo.y = canvas.height - obstaculo.altura; 
-        cogumeloOnMap = false;
-        if (firstObstaculo) {
-            firstObstaculo = false;
-        } else {
-            pontos();
-        }
-        boost();
     }
 }
 
