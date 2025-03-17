@@ -80,9 +80,8 @@ class obstaculo extends entidade {
             this.velocidadeX += 0.3;
             let nova_altura = (Math.random() * 50) + 35;
             this.altura = nova_altura;
-            this.y = canvas.height - this.altura;
-            points++;
-            pontos2.innerHTML = "Pontos: " + points;
+            this.y = canvas.height - this.altura;   
+            pontos();
             if (points > MaxPoints) {
                 MaxPoints = points;
                 maxPointos.innerHTML = "Max Pontos: " + MaxPoints;
@@ -115,6 +114,18 @@ function detectarColisao(a, b) {
         a.y < b.y + b.altura &&
         a.y + a.altura > b.y
     );
+}
+
+function pontos(){
+    points += 10;
+    document.getElementById("pontos").innerHTML = "Pontos: " + points;
+}
+
+function maxPontos(){
+    if(points > MaxPoints){
+        MaxPoints = points;
+        document.getElementById("Maxpontos").innerHTML = "Máximo de Pontos: " + MaxPoints;
+    }
 }
 
 function gameOver() {
